@@ -17,6 +17,14 @@
     overflow-x: hidden;
   }
 
+  /* `overflow-x: hidden` makes the body a scroll container, which can break the
+     hero's `position: sticky` stage. `clip` contains overflow without doing that. */
+  @supports (overflow: clip) {
+    body {
+      overflow-x: clip;
+    }
+  }
+
   h1,
   h2,
   h3,
@@ -165,6 +173,27 @@
     .carousel-track {
       gap: 1.5rem;
     }
+  }
+
+  /* Scroll-driven hero: the stage stays pinned while these extra viewport heights
+     of page scroll map onto the film's timeline. */
+  .hero-scroll {
+    height: 300svh;
+  }
+
+  @media (max-width: 767px) {
+    .hero-scroll {
+      height: 260svh;
+    }
+  }
+
+  .hero-layer {
+    will-change: opacity, transform;
+  }
+
+  .hero-film {
+    will-change: transform;
+    backface-visibility: hidden;
   }
 
   .image-zoom {

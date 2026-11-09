@@ -15,11 +15,17 @@ export default function Header() {
   const lightText = !solid || open
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    const onScroll = () => {
+      // The home hero is pinned for a long scroll-driven film, so the header has to
+      // stay light over it until the hero section itself has scrolled away.
+      const hero = isHome ? document.getElementById('hero') : null
+      const overHero = hero ? hero.getBoundingClientRect().bottom > 80 : false
+      setScrolled(overHero ? false : window.scrollY > 24)
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [isHome])
 
   useEffect(() => {
     setOpen(false)
